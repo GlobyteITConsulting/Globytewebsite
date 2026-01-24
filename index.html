@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>GLOBYTE — IT & Business Consulting</title>
-  <meta name="description" content="Globyte is an IT and business consulting firm dedicated to helping organizations modernize technology, strengthen cybersecurity, and achieve sustainable growth.">
+  <meta name="description"
+    content="Globyte is an IT and business consulting firm dedicated to helping organizations modernize technology, strengthen cybersecurity, and achieve sustainable growth.">
 
   <!-- Performance optimizations -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
 
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -80,51 +83,71 @@
 
   <style>
     :root {
-      --primary: #8fbcb5;        /* Softer teal for main elements */
-      --primary-dark: #2f3a46;   /* Deep bluish-gray for contrast */
-      --secondary: #b0bcc1;      /* Gentle neutral gray-blue */
-      --accent: #14b8a6;         /* Vibrant teal accent */
-      --light: #f8fafc;          /* Clean, crisp background */
-      --dark: #0e1726;           /* Deep dark blue */
+      --primary: #8fbcb5;
+      /* Softer teal for main elements */
+      --primary-dark: #2f3a46;
+      /* Deep bluish-gray for contrast */
+      --secondary: #b0bcc1;
+      /* Gentle neutral gray-blue */
+      --accent: #14b8a6;
+      /* Vibrant teal accent */
+      --light: #f8fafc;
+      /* Clean, crisp background */
+      --dark: #0e1726;
+      /* Deep dark blue */
     }
-    
+
     body {
       font-family: 'PT Sans', system-ui, -apple-system, sans-serif;
       color: var(--secondary);
       line-height: 1.6;
       background-color: var(--light);
       font-weight: 400;
+      /* Mobile text size increase */
+      font-size: 18px;
     }
-    
-    h1, h2, h3, h4, h5, h6 {
+
+    @media (min-width: 768px) {
+      body {
+        font-size: 16px;
+        /* Reset to normal for desktop */
+      }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-weight: 400;
     }
-    
+
     .gradient-bg {
       background: linear-gradient(135deg, #f0f7f6 0%, #e1efed 100%);
     }
-    
+
     .hero-gradient {
       background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
     }
-    
+
     .section-padding {
       padding: 5rem 0;
     }
-    
+
     .card-hover {
       transition: all 0.3s ease;
     }
-    
+
     .card-hover:hover {
       transform: translateY(-8px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
-    
+
     .nav-link {
       position: relative;
     }
-    
+
     .nav-link::after {
       content: '';
       position: absolute;
@@ -135,11 +158,11 @@
       background-color: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .nav-link:hover::after {
       width: 100%;
     }
-    
+
     .service-icon {
       width: 70px;
       height: 70px;
@@ -150,54 +173,54 @@
       margin-bottom: 1.5rem;
       font-size: 1.75rem;
     }
-    
+
     .team-member {
       transition: all 0.3s ease;
     }
-    
+
     .team-member:hover {
       transform: translateY(-5px);
     }
-    
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       transition: all 0.3s ease;
     }
-    
+
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(143, 188, 181, 0.3);
     }
-    
+
     .btn-secondary {
       background: transparent;
       border: 2px solid var(--primary);
       color: var(--primary);
       transition: all 0.3s ease;
     }
-    
+
     .btn-secondary:hover {
       background: var(--primary);
       color: white;
     }
-    
+
     /* Optimize images */
     img {
       max-width: 100%;
       height: auto;
     }
-    
+
     /* Performance optimizations */
     * {
       box-sizing: border-box;
     }
-    
+
     /* Team Card Styles */
     .team-card-container {
       width: 100%;
       perspective: 1000px;
     }
-    
+
     .team-card {
       width: 100%;
       height: 360px;
@@ -207,11 +230,11 @@
       transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       border-radius: 16px;
     }
-    
+
     .team-card.flipped {
       transform: rotateY(180deg);
     }
-    
+
     .team-card-face {
       position: absolute;
       width: 100%;
@@ -219,12 +242,12 @@
       backface-visibility: hidden;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
     }
-    
+
     .team-card-front {
       background: white;
       color: var(--primary-800);
@@ -233,16 +256,18 @@
       justify-content: center;
       align-items: center;
     }
-    
+
     .team-card-back {
       /* CHANGED: Background is now white/light */
       background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
-      color: var(--primary-dark); /* CHANGED: Text color is now dark */
-      border: 1px solid #e2e8f0; /* Added border for consistency */
+      color: var(--primary-dark);
+      /* CHANGED: Text color is now dark */
+      border: 1px solid #e2e8f0;
+      /* Added border for consistency */
       transform: rotateY(180deg);
       justify-content: space-between;
     }
-    
+
     .team-member-img {
       width: 120px;
       height: 120px;
@@ -250,42 +275,42 @@
       object-fit: cover;
       margin-bottom: 1.5rem;
       border: 4px solid white;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-    
+
     .team-member-name {
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
-    
+
     .team-member-role {
       color: var(--accent-500);
       font-weight: 500;
       margin-bottom: 1rem;
     }
-    
+
     .team-member-bio {
       font-size: 0.875rem;
       line-height: 1.5;
       margin-bottom: 1.5rem;
       flex-grow: 1;
       /* Remove auto overflow to prevent scrollbars since we shortened text */
-      overflow-y: hidden; 
+      overflow-y: hidden;
     }
-    
+
     .team-member-contact {
       display: flex;
       justify-content: center;
       gap: 0.75rem;
     }
-    
+
     .team-contact-btn {
       width: 36px;
       height: 36px;
       border-radius: 50%;
       /* CHANGED: Darker background for visibility on white card */
-      background: rgba(143, 188, 181, 0.15); 
+      background: rgba(143, 188, 181, 0.15);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -293,13 +318,13 @@
       color: var(--primary);
       transition: all 0.3s ease;
     }
-    
+
     .team-contact-btn:hover {
       background: var(--accent-500);
       color: white;
       transform: translateY(-2px);
     }
-    
+
     .flip-indicator {
       position: absolute;
       bottom: 1rem;
@@ -309,26 +334,29 @@
       align-items: center;
       gap: 0.25rem;
     }
-    
+
     @media (max-width: 768px) {
+
       /* Styles for mobile */
       body {
         overflow-x: hidden;
       }
+
       img {
         max-width: 100%;
         height: auto;
       }
     }
-    
+
     @media (min-width: 769px) and (max-width: 1024px) {
+
       /* Styles for tablet */
       .container {
         display: flex;
         flex-wrap: wrap;
       }
     }
-    
+
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -336,20 +364,16 @@
     }
   </style>
 </head>
+
 <body class="bg-white">
 
   <!-- Header -->
   <header id="header" class="fixed w-full z-50 bg-white/90 backdrop-blur-sm transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-         <a href="#home" class="flex items-center gap-3" aria-label="Globyte home">
-        <img
-          src="https://s3.eu-north-1.amazonaws.com/www.globytesolution.com/Images/globytelogolarge-05.png"
-          alt="GLOBYTE logo"
-          class="object-contain h-8 md:h-10 lg:h-12 max-w-[180px]"
-          loading="lazy"
-          width="206.17"
-          height="55"
-        />
+      <a href="#home" class="flex items-center gap-3" aria-label="Globyte home">
+        <img src="https://s3.eu-north-1.amazonaws.com/www.globytesolution.com/Images/globytelogolarge-05.png"
+          alt="GLOBYTE logo" class="object-contain h-8 md:h-10 lg:h-12 max-w-[180px]" loading="lazy" width="206.17"
+          height="55" />
       </a>
 
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium" aria-label="Primary">
@@ -358,13 +382,17 @@
         <a href="#about" class="nav-link text-primary-800 hover:text-primary-600 transition">About</a>
         <a href="#team" class="nav-link text-primary-800 hover:text-primary-600 transition">Team</a>
         <a href="#contact">
-          <button class="ml-2 px-5 py-2.5 rounded-lg btn-primary text-white font-medium shadow-soft">Get Started</button>
+          <button class="ml-2 px-5 py-2.5 rounded-lg btn-primary text-white font-medium shadow-soft">Get
+            Started</button>
         </a>
       </nav>
 
       <div class="md:hidden">
-        <button id="menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="p-2 rounded-md focus:ring-2 focus:ring-primary-300">
-          <svg class="w-6 h-6 text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <button id="menu-toggle" aria-controls="mobile-menu" aria-expanded="false"
+          class="p-2 rounded-md focus:ring-2 focus:ring-primary-300">
+          <svg class="w-6 h-6 text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
         </button>
       </div>
     </div>
@@ -373,7 +401,8 @@
     <div id="mobile-menu" class="md:hidden hidden bg-white border-t shadow-sm animate-slide-up">
       <div class="px-4 py-4 space-y-2">
         <a href="#home" class="block py-3 px-4 text-primary-800 rounded-lg hover:bg-primary-50 transition">Home</a>
-        <a href="#services" class="block py-3 px-4 text-primary-800 rounded-lg hover:bg-primary-50 transition">Services</a>
+        <a href="#services"
+          class="block py-3 px-4 text-primary-800 rounded-lg hover:bg-primary-50 transition">Services</a>
         <a href="#about" class="block py-3 px-4 text-primary-800 rounded-lg hover:bg-primary-50 transition">About</a>
         <a href="#team" class="block py-3 px-4 text-primary-800 rounded-lg hover:bg-primary-50 transition">Team</a>
         <a href="#contact" class="block py-3 px-4 mt-2 btn-primary text-white text-center rounded-lg">Get Started</a>
@@ -384,30 +413,50 @@
   <!-- Hero Section -->
   <section id="home" class="pt-32 pb-20 gradient-bg relative overflow-hidden">
     <div class="absolute inset-0 overflow-hidden">
-      <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-accent-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 2s;"></div>
+      <div
+        class="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float">
+      </div>
+      <div
+        class="absolute -bottom-40 -left-40 w-80 h-80 bg-accent-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"
+        style="animation-delay: 2s;"></div>
     </div>
-    
+
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div class="space-y-8 animate-fade-in">
+        <div class="space-y-8 animate-fade-in text-center md:text-left">
           <div>
-            <span class="inline-block px-4 py-1.5 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-4">Innovate. Transform. Succeed.</span>
+            <span
+              class="inline-block px-4 py-1.5 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-4">Innovate.
+              Transform. Succeed.</span>
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-normal text-primary-800 leading-tight">
-              Driving <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-accent-500">Digital Transformation</span> for Your Business
+              Driving <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-accent-500">Digital
+                Transformation</span> for Your Business
             </h1>
           </div>
-          
-          <p class="text-lg md:text-xl text-secondary-700 max-w-xl">
-            Globyte is an IT and business consulting firm dedicated to helping organizations modernize their technology, strengthen cybersecurity, streamline operations, and achieve sustainable growth. We deliver a full suite of services designed to align IT infrastructure with business strategy, driving efficiency, resilience, and long-term success.
+
+          <!-- Desktop Paragraph -->
+          <p class="hidden md:block text-lg md:text-xl text-secondary-700 max-w-xl">
+            Globyte is an IT and business consulting firm dedicated to helping organizations modernize their technology,
+            strengthen cybersecurity, streamline operations, and achieve sustainable growth. We deliver a full suite of
+            services designed to align IT infrastructure with business strategy, driving efficiency, resilience, and
+            long-term success.
           </p>
-          
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a href="#services" class="px-6 py-3.5 rounded-lg btn-primary text-white font-semibold text-center shadow-medium">Explore Services</a>
-            <a href="#contact" class="px-6 py-3.5 rounded-lg btn-secondary font-semibold text-center">Schedule a Consultation</a>
+
+          <!-- Mobile Paragraph -->
+          <p class="md:hidden text-lg text-secondary-700 max-w-xl mx-auto">
+            Modernize technology, strengthen security, and drive growth with Globyte.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <a href="#services"
+              class="px-6 py-3.5 rounded-lg btn-primary text-white font-semibold text-center shadow-medium">Explore
+              Services</a>
+            <a href="#contact" class="px-6 py-3.5 rounded-lg btn-secondary font-semibold text-center">Schedule a
+              Consultation</a>
           </div>
-          
-          <div class="pt-4 flex items-center gap-6 text-sm text-secondary-700">
+
+          <div class="pt-4 flex items-center justify-center md:justify-start gap-6 text-sm text-secondary-700">
             <div class="flex items-center gap-2">
               <i class="fas fa-check-circle text-accent-500"></i>
               <span>Cloud Solutions</span>
@@ -422,47 +471,48 @@
             </div>
           </div>
         </div>
-        
-        <div class="relative animate-slide-up">
-          <div class="relative z-10 bg-white rounded-2xl shadow-large p-8">
+
+        <div class="relative animate-slide-up mt-8 md:mt-0 hidden md:block">
+          <div class="relative z-10 bg-white rounded-2xl shadow-large p-8 md:scale-100 scale-90 origin-center">
             <div class="grid grid-cols-2 gap-6">
               <div class="space-y-6">
                 <div class="bg-primary-50 rounded-xl p-5 card-hover">
                   <div class="service-icon bg-primary-100 text-primary-600 mx-auto">
-                    <i class="fas fa-cloud"></i>
+                    <i class="fas fa-cloud-arrow-up"></i>
                   </div>
                   <h3 class="font-semibold text-primary-800 text-center">Cloud Migration</h3>
                 </div>
-                
+
                 <div class="bg-accent-50 rounded-xl p-5 card-hover">
                   <div class="service-icon bg-accent-100 text-accent-600 mx-auto">
-                    <i class="fas fa-shield-alt"></i>
+                    <i class="fas fa-user-shield"></i>
                   </div>
                   <h3 class="font-semibold text-primary-800 text-center">Security</h3>
                 </div>
               </div>
-              
+
               <div class="space-y-6 mt-10">
                 <div class="bg-primary-50 rounded-xl p-5 card-hover">
                   <div class="service-icon bg-primary-100 text-primary-600 mx-auto">
-                    <i class="fas fa-chart-line"></i>
+                    <i class="fas fa-chart-pie"></i>
                   </div>
                   <h3 class="font-semibold text-primary-800 text-center">Analytics</h3>
                 </div>
-                
+
                 <div class="bg-accent-50 rounded-xl p-5 card-hover">
                   <div class="service-icon bg-accent-100 text-accent-600 mx-auto">
-                    <i class="fas fa-cogs"></i>
+                    <i class="fas fa-robot"></i>
                   </div>
                   <h3 class="font-semibold text-primary-800 text-center">Automation</h3>
                 </div>
               </div>
             </div>
-            
+
             <div class="mt-8 pt-6 border-t border-secondary-100 flex justify-between items-center">
               <div>
-              <p class="text-sm text-secondary-600 mt-1">Building partnerships with industry leaders</p>
-                <p class="text-sm text-secondary-600 mt-2">Delivering measurable outcomes in cloud, security, and analytics.</p>
+                <p class="text-sm text-secondary-600 mt-1">Building partnerships with industry leaders</p>
+                <p class="text-sm text-secondary-600 mt-2">Delivering measurable outcomes in cloud, security, and
+                  analytics.</p>
                 <div class="flex gap-4 mt-2">
                   <div class="w-8 h-8 bg-secondary-200 rounded-full"></div>
                   <div class="w-8 h-8 bg-secondary-200 rounded-full"></div>
@@ -475,7 +525,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Decorative elements -->
           <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary-500 rounded-xl -z-10 rotate-12"></div>
           <div class="absolute -bottom-4 -right-4 w-20 h-20 bg-accent-500 rounded-xl -z-10 -rotate-12"></div>
@@ -489,69 +539,83 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="text-center max-w-3xl mx-auto mb-16">
         <span class="text-primary-600 font-semibold">OUR SERVICES</span>
-        <h2 class="text-3xl md:text-4xl font-normal text-primary-800 mt-2 mb-4">Solutions for Digital Transformation</h2>
-        <p class="text-lg text-secondary-700">We provide specialized services to ensure your business thrives in today's competitive, technology-driven landscape.</p>
+        <h2 class="text-3xl md:text-4xl font-normal text-primary-800 mt-2 mb-4">Solutions for Digital Transformation
+        </h2>
+        <p class="hidden md:block text-lg text-secondary-700">We provide specialized services to ensure your business
+          thrives in today's competitive, technology-driven landscape.</p>
       </div>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Service 1 -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover">
-          <div class="service-icon bg-primary-50 text-primary-500">
-            <i class="fas fa-road"></i>
+        <div
+          class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover text-center md:text-left">
+          <div class="service-icon bg-primary-50 text-primary-500 md:mx-0 mx-auto">
+            <i class="fas fa-chess"></i>
           </div>
           <h3 class="text-xl font-normal text-primary-800 mb-3">IT Strategy & Planning</h3>
-          <p class="text-secondary-700 mb-4">Collaborate with clients to design a strategic technology roadmap that aligns with business goals, enabling digital transformation and sustainable growth.</p>
-        
+          <p class="text-secondary-700 mb-4">Collaborate with clients to design a strategic technology roadmap that
+            aligns with business goals, enabling digital transformation and sustainable growth.</p>
+
         </div>
-        
+
         <!-- Service 2 -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover">
-          <div class="service-icon bg-accent-50 text-accent-500">
+        <div
+          class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover text-center md:text-left">
+          <div class="service-icon bg-accent-50 text-accent-500 md:mx-0 mx-auto">
             <i class="fas fa-puzzle-piece"></i>
           </div>
           <h3 class="text-xl font-normal text-primary-800 mb-3">Systems Integration</h3>
-          <p class="text-secondary-700 mb-4">Facilitate the seamless integration of software, hardware, and network systems to streamline workflows and enhance organizational efficiency.</p>
-        
+          <p class="text-secondary-700 mb-4">Facilitate the seamless integration of software, hardware, and network
+            systems to streamline workflows and enhance organizational efficiency.</p>
+
         </div>
-        
+
         <!-- Service 3 -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover">
-          <div class="service-icon bg-primary-50 text-primary-500">
-            <i class="fas fa-shield-alt"></i>
+        <div
+          class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover text-center md:text-left">
+          <div class="service-icon bg-primary-50 text-primary-500 md:mx-0 mx-auto">
+            <i class="fas fa-shield-halved"></i>
           </div>
           <h3 class="text-xl font-normal text-primary-800 mb-3">Cybersecurity Services</h3>
-          <p class="text-secondary-700 mb-4">Conduct comprehensive risk assessments and implement robust security measures to safeguard client data and systems against threats.</p>
-        
+          <p class="text-secondary-700 mb-4">Conduct comprehensive risk assessments and implement robust security
+            measures to safeguard client data and systems against threats.</p>
+
         </div>
-        
+
         <!-- Service 4 -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover">
-          <div class="service-icon bg-accent-50 text-accent-500">
+        <div
+          class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover text-center md:text-left">
+          <div class="service-icon bg-accent-50 text-accent-500 md:mx-0 mx-auto">
             <i class="fas fa-cloud"></i>
           </div>
           <h3 class="text-xl font-normal text-primary-800 mb-3">Cloud Computing Solutions</h3>
-          <p class="text-secondary-700 mb-4">Enable efficient cloud migration and manage infrastructure across major platforms to optimize cost, scalability, and performance.</p>
-        
+          <p class="text-secondary-700 mb-4">Enable efficient cloud migration and manage infrastructure across major
+            platforms to optimize cost, scalability, and performance.</p>
+
         </div>
-        
+
         <!-- Service 5 -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover">
-          <div class="service-icon bg-primary-50 text-primary-500">
+        <div
+          class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover text-center md:text-left">
+          <div class="service-icon bg-primary-50 text-primary-500 md:mx-0 mx-auto">
             <i class="fas fa-headset"></i>
           </div>
           <h3 class="text-xl font-normal text-primary-800 mb-3">Managed IT Services</h3>
-          <p class="text-secondary-700 mb-4">Provide proactive network monitoring, system maintenance, and helpdesk support to ensure continuous and reliable business operations.</p>
-        
+          <p class="text-secondary-700 mb-4">Provide proactive network monitoring, system maintenance, and helpdesk
+            support to ensure continuous and reliable business operations.</p>
+
         </div>
-        
+
         <!-- Service 6 -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover">
-          <div class="service-icon bg-accent-50 text-accent-500">
-            <i class="fas fa-code"></i>
+        <div
+          class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover text-center md:text-left">
+          <div class="service-icon bg-accent-50 text-accent-500 md:mx-0 mx-auto">
+            <i class="fas fa-laptop-code"></i>
           </div>
           <h3 class="text-xl font-normal text-primary-800 mb-3">Software Development</h3>
-          <p class="text-secondary-700 mb-4">Design and develop customized applications tailored to meet each client's unique business challenges, goals, and operational requirements.</p>
-         
+          <p class="text-secondary-700 mb-4">Design and develop customized applications tailored to meet each client's
+            unique business challenges, goals, and operational requirements.</p>
+
         </div>
       </div>
     </div>
@@ -564,45 +628,59 @@
         <div class="animate-fade-in">
           <span class="text-primary-600 font-semibold">WHY CHOOSE US</span>
           <h2 class="text-3xl md:text-4xl font-normal text-primary-800 mt-2 mb-6">Expertise That Drives Results</h2>
-          <p class="text-lg text-secondary-700 mb-8">Globyte delivers innovative IT and business consulting solutions through a collaborative team of cloud-certified architects, UI/UX designers, full-stack developers, and strategic partners. With a dynamic pipeline of interns and specialized external consultants, we provide organizations with the agility and expertise to solve complex challenges, optimize performance, and drive sustainable growth.</p>
-          
+          <p class="hidden md:block text-lg text-secondary-700 mb-8">Globyte delivers innovative IT and business
+            consulting solutions
+            through a collaborative team of cloud-certified architects, UI/UX designers, full-stack developers, and
+            strategic partners. With a dynamic pipeline of interns and specialized external consultants, we provide
+            organizations with the agility and expertise to solve complex challenges, optimize performance, and drive
+            sustainable growth.</p>
+
           <div class="space-y-6">
-            <div class="flex gap-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-500">
+            <div class="flex gap-4 items-center">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-500">
                 <i class="fas fa-bullseye"></i>
               </div>
               <div>
                 <h3 class="font-semibold text-primary-800 mb-1">Strategic Approach</h3>
-                <p class="text-secondary-700">Practical tech roadmaps that align with business goals and drive measurable outcomes.</p>
+                <p class="hidden md:block text-secondary-700">Practical tech roadmaps that align with business goals and
+                  drive
+                  measurable outcomes.</p>
               </div>
             </div>
-            
-            <div class="flex gap-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center text-accent-500">
+
+            <div class="flex gap-4 items-center">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center text-accent-500">
                 <i class="fas fa-rocket"></i>
               </div>
               <div>
                 <h3 class="font-semibold text-primary-800 mb-1">End-to-End Delivery</h3>
-                <p class="text-secondary-700">Comprehensive implementation and support for critical initiatives from conception to completion.</p>
+                <p class="hidden md:block text-secondary-700">Comprehensive implementation and support for critical
+                  initiatives from
+                  conception to completion.</p>
               </div>
             </div>
-            
-            <div class="flex gap-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-500">
+
+            <div class="flex gap-4 items-center">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-500">
                 <i class="fas fa-leaf"></i>
               </div>
               <div>
                 <h3 class="font-semibold text-primary-800 mb-1">Sustainable Solutions</h3>
-                <p class="text-secondary-700">Maintainable solutions and operational excellence that stand the test of time.</p>
+                <p class="hidden md:block text-secondary-700">Maintainable solutions and operational excellence that
+                  stand the test of
+                  time.</p>
               </div>
             </div>
           </div>
         </div>
-        
+
         <div class="relative animate-slide-up">
           <div class="bg-white rounded-2xl shadow-medium p-8">
             <div class="space-y-6">
-              <div class="flex justify-between items-center pb-4 border-b border-secondary-100">
+              <div class="hidden md:flex justify-between items-center pb-4 border-b border-secondary-100">
                 <div>
                   <p class="text-2xl font-normal text-primary-800">15+</p>
                   <p class="text-sm text-secondary-600">Years Experience</p>
@@ -616,7 +694,7 @@
                   <p class="text-sm text-secondary-600">Client Focused</p>
                 </div>
               </div>
-              
+
               <div>
                 <h3 class="font-semibold text-primary-800 mb-4">Our Expertise</h3>
                 <div class="space-y-4">
@@ -629,7 +707,7 @@
                       <div class="bg-primary-500 h-2 rounded-full" style="width: 95%"></div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <div class="flex justify-between mb-1">
                       <span class="text-sm font-medium text-secondary-700">Cybersecurity</span>
@@ -639,7 +717,7 @@
                       <div class="bg-accent-500 h-2 rounded-full" style="width: 92%"></div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <div class="flex justify-between mb-1">
                       <span class="text-sm font-medium text-secondary-700">Data Analytics</span>
@@ -649,7 +727,7 @@
                       <div class="bg-primary-500 h-2 rounded-full" style="width: 88%"></div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <div class="flex justify-between mb-1">
                       <span class="text-sm font-medium text-secondary-700">Software Development</span>
@@ -663,7 +741,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Decorative elements -->
           <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-primary-500 rounded-xl -z-10 rotate-12 opacity-10"></div>
           <div class="absolute -top-4 -left-4 w-20 h-20 bg-accent-500 rounded-xl -z-10 -rotate-12 opacity-10"></div>
@@ -678,31 +756,70 @@
       <div class="text-center max-w-3xl mx-auto mb-16">
         <span class="text-primary-600 font-semibold">OUR TEAM</span>
         <h2 class="text-3xl md:text-4xl font-normal text-primary-800 mt-2 mb-4">Meet Our Experts</h2>
-        <p class="text-lg text-secondary-700">Globyte delivers innovative IT and business consulting solutions through a collaborative team of cloud-certified architects, UI/UX designers, full-stack developers, and strategic partners. Supported by a dynamic network of interns and specialized consultants, we give organizations the expertise and agility to solve complex challenges, optimize performance, and drive sustainable growth.</p>
+        <p class="hidden md:block text-lg text-secondary-700">Globyte delivers innovative IT and business consulting
+          solutions through a
+          collaborative team of cloud-certified architects, UI/UX designers, full-stack developers, and strategic
+          partners. Supported by a dynamic network of interns and specialized consultants, we give organizations the
+          expertise and agility to solve complex challenges, optimize performance, and drive sustainable growth.</p>
+        <p class="md:hidden text-lg text-secondary-700">Our cloud-certified experts and dynamic team deliver innovative
+          solutions to drive your business growth.</p>
       </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <style>
+        /* Mobile Carousel Styles */
+        @media (max-width: 768px) {
+          .team-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 1.5rem;
+            padding-bottom: 2rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            /* Firefox */
+          }
+
+          .team-carousel::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+          }
+
+          .team-card-container {
+            flex: 0 0 85%;
+            /* Shows part of the next card */
+            scroll-snap-align: center;
+          }
+        }
+      </style>
+
+      <div class="team-carousel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Team Member 1 -->
         <div class="team-card-container">
           <div class="team-card">
             <div class="team-card-face team-card-front">
-              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
+              <div
+                class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
                 <img src="./Globyte images/people/Hiruy.jpg" alt="Hiruy Shita" class="team-member-img">
               </div>
               <h3 class="team-member-name">Hiruy Shita</h3>
               <p class="team-member-role">Principal Architect & Data Solutions Lead</p>
-              <p class="text-secondary-700 text-sm mb-4">A seasoned Project Lead and Architect with over 15 years of experience in end-to-end data solutions, specializing in data engineering, analytics, and AI/ML integration.</p>
+              <p class="text-secondary-700 text-sm mb-4 hidden md:block">A seasoned Project Lead and Architect with over
+                15 years of
+                experience in end-to-end data solutions, specializing in data engineering, analytics, and AI/ML
+                integration.</p>
               <div class="flip-indicator">
                 <i class="fas fa-rotate-right mr-1"></i> Click for details
               </div>
             </div>
-            
+
             <div class="team-card-face team-card-back">
               <div>
                 <h3 class="team-member-name text-gray-900">Hiruy Shita</h3>
                 <p class="team-member-role">Principal Architect & Data Solutions Lead</p>
                 <div class="team-member-bio">
-                  <p class="text-gray-800 text-sm mb-3">Hiruy brings over 15 years of experience in end-to-end data solutions, specializing in data engineering, analytics, and AI/ML integration. Expert in delivering large-scale data transformation for Fortune 500 companies.</p>
+                  <p class="text-gray-800 text-sm mb-3">Hiruy brings over 15 years of experience in end-to-end data
+                    solutions, specializing in data engineering, analytics, and AI/ML integration. Expert in delivering
+                    large-scale data transformation for Fortune 500 companies.</p>
                 </div>
               </div>
               <div class="team-member-contact">
@@ -719,28 +836,33 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Team Member 2 -->
         <div class="team-card-container">
           <div class="team-card">
             <div class="team-card-face team-card-front">
-              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
+              <div
+                class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
                 <img src="./Globyte images/people/Ablante.jpg" alt="Ablante Legesse" class="team-member-img">
               </div>
               <h3 class="team-member-name">Ablante Legesse</h3>
               <p class="team-member-role">Co-Team Leader</p>
-              <p class="text-secondary-700 text-sm mb-4">Dynamic Technical Leader and Data & AI Strategist with 18+ years of experience guiding Fortune 100 companies through large-scale data transformations.</p>
+              <p class="text-secondary-700 text-sm mb-4 hidden md:block">Dynamic Technical Leader and Data & AI
+                Strategist with 18+
+                years of experience guiding Fortune 100 companies through large-scale data transformations.</p>
               <div class="flip-indicator">
                 <i class="fas fa-rotate-right mr-1"></i> Click for details
               </div>
             </div>
-            
+
             <div class="team-card-face team-card-back">
               <div>
                 <h3 class="team-member-name text-gray-900">Ablante Legesse</h3>
                 <p class="team-member-role">Co-Team Leader</p>
                 <div class="team-member-bio">
-                  <p class="text-gray-800 text-sm mb-3">Dynamic Technical Leader and Data & AI Strategist with 18+ years guiding Fortune 100 companies. Specializes in aligning technology with business objectives to drive innovation.</p>
+                  <p class="text-gray-800 text-sm mb-3">Dynamic Technical Leader and Data & AI Strategist with 18+ years
+                    guiding Fortune 100 companies. Specializes in aligning technology with business objectives to drive
+                    innovation.</p>
                 </div>
               </div>
               <div class="team-member-contact">
@@ -757,28 +879,33 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Team Member 3 -->
         <div class="team-card-container">
           <div class="team-card">
             <div class="team-card-face team-card-front">
-              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
+              <div
+                class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
                 <img src="./Globyte images/people/Michael.jpg" alt="Michael Alemu" class="team-member-img">
               </div>
               <h3 class="team-member-name">Michael Alemu</h3>
               <p class="team-member-role">Tech Lead</p>
-              <p class="text-secondary-700 text-sm mb-4">Our Microsoft Shop Guru with over 10 years of expertise in Microsoft SQL, Azure Cloud, Databricks, Data Analytics, Business Intelligence, and Data Engineering.</p>
+              <p class="text-secondary-700 text-sm mb-4 hidden md:block">Our Microsoft Shop Guru with over 10 years of
+                expertise in
+                Microsoft SQL, Azure Cloud, Databricks, Data Analytics, Business Intelligence, and Data Engineering.</p>
               <div class="flip-indicator">
                 <i class="fas fa-rotate-right mr-1"></i> Click for details
               </div>
             </div>
-            
+
             <div class="team-card-face team-card-back">
               <div>
                 <h3 class="team-member-name text-gray-900">Michael Alemu</h3>
                 <p class="team-member-role">Tech Lead</p>
                 <div class="team-member-bio">
-                  <p class="text-gray-800 text-sm mb-3">Microsoft Shop Guru with 10+ years in SQL, Azure, Databricks, and Power BI. Expert in architecting and implementing complex data solutions across multiple industries.</p>
+                  <p class="text-gray-800 text-sm mb-3">Microsoft Shop Guru with 10+ years in SQL, Azure, Databricks,
+                    and Power BI. Expert in architecting and implementing complex data solutions across multiple
+                    industries.</p>
                 </div>
               </div>
               <div class="team-member-contact">
@@ -795,28 +922,32 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Team Member 4 -->
         <div class="team-card-container">
           <div class="team-card">
             <div class="team-card-face team-card-front">
-              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
+              <div
+                class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
                 <img src="./Globyte images/people/Alex.jpg" alt="Alex Belay" class="team-member-img">
               </div>
               <h3 class="team-member-name">Alex Belay</h3>
               <p class="team-member-role">Business Process Optimization Lead</p>
-              <p class="text-secondary-700 text-sm mb-4">Our Process Improvement Expert, Alex, specializes in analyzing and optimizing business processes to enhance efficiency, reduce costs, and improve performance.</p>
+              <p class="text-secondary-700 text-sm mb-4 hidden md:block">Our Process Improvement Expert, Alex,
+                specializes in analyzing
+                and optimizing business processes to enhance efficiency, reduce costs, and improve performance.</p>
               <div class="flip-indicator">
                 <i class="fas fa-rotate-right mr-1"></i> Click for details
               </div>
             </div>
-            
+
             <div class="team-card-face team-card-back">
               <div>
                 <h3 class="team-member-name text-gray-900">Alex Belay</h3>
                 <p class="team-member-role">Business Process Optimization Lead</p>
                 <div class="team-member-bio">
-                  <p class="text-gray-800 text-sm mb-3">Process Improvement Expert focused on analyzing and optimizing workflows to enhance efficiency and reduce costs. Proven track record in operational excellence.</p>
+                  <p class="text-gray-800 text-sm mb-3">Process Improvement Expert focused on analyzing and optimizing
+                    workflows to enhance efficiency and reduce costs. Proven track record in operational excellence.</p>
                 </div>
               </div>
               <div class="team-member-contact">
@@ -833,28 +964,33 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Team Member 5 -->
         <div class="team-card-container">
           <div class="team-card">
             <div class="team-card-face team-card-front">
-              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
+              <div
+                class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
                 <img src="./Globyte images/people/Befekadu.jpg" alt="Befkadu Gebru" class="team-member-img">
               </div>
               <h3 class="team-member-name">Befkadu Gebru</h3>
               <p class="team-member-role">Co-Tech Lead</p>
-              <p class="text-secondary-700 text-sm mb-4">A seasoned Cloud Engineer, Database Administrator, and DevOps Leader with 15+ years of experience modernizing infrastructure and driving operational excellence.</p>
+              <p class="text-secondary-700 text-sm mb-4 hidden md:block">A seasoned Cloud Engineer, Database
+                Administrator, and DevOps
+                Leader with 15+ years of experience modernizing infrastructure and driving operational excellence.</p>
               <div class="flip-indicator">
                 <i class="fas fa-rotate-right mr-1"></i> Click for details
               </div>
             </div>
-            
+
             <div class="team-card-face team-card-back">
               <div>
                 <h3 class="team-member-name text-gray-900">Befkadu Gebru</h3>
                 <p class="team-member-role">Co-Tech Lead</p>
                 <div class="team-member-bio">
-                  <p class="text-gray-800 text-sm mb-3">Cloud Engineer, DBA, and DevOps Leader with 15+ years modernizing infrastructure. Specializes in Cloud Architecture and Operational Excellence for finance and retail sectors.</p>
+                  <p class="text-gray-800 text-sm mb-3">Cloud Engineer, DBA, and DevOps Leader with 15+ years
+                    modernizing infrastructure. Specializes in Cloud Architecture and Operational Excellence for finance
+                    and retail sectors.</p>
                 </div>
               </div>
               <div class="team-member-contact">
@@ -871,30 +1007,37 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Team Member 6 - Interns -->
         <div class="team-card-container">
           <div class="team-card">
             <div class="team-card-face team-card-front">
-              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
-                <div class="w-full h-full bg-secondary-200 flex items-center justify-center text-white text-4xl font-normal">
+              <div
+                class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-500 to-primary-800 mx-auto mb-4 overflow-hidden border-4 border-white shadow-medium">
+                <div
+                  class="w-full h-full bg-secondary-200 flex items-center justify-center text-white text-4xl font-normal">
                   <i class="fas fa-users"></i>
                 </div>
               </div>
               <h3 class="team-member-name">Interns & Associates</h3>
               <p class="team-member-role">Emerging Talent</p>
-              <p class="text-secondary-700 text-sm mb-4">Our team of dedicated interns and associates brings fresh perspectives and enthusiasm to every project, supporting our core team in delivering exceptional results.</p>
+              <p class="text-secondary-700 text-sm mb-4 hidden md:block">Our team of dedicated interns and associates
+                brings fresh
+                perspectives and enthusiasm to every project, supporting our core team in delivering exceptional
+                results.</p>
               <div class="flip-indicator">
                 <i class="fas fa-rotate-right mr-1"></i> Click for details
               </div>
             </div>
-            
+
             <div class="team-card-face team-card-back">
               <div>
                 <h3 class="team-member-name text-gray-900">Interns & Associates</h3>
                 <p class="team-member-role">Emerging Talent</p>
                 <div class="team-member-bio">
-                  <p class="text-gray-800 text-sm mb-3">Dedicated emerging talent bringing fresh perspectives in software development, data analysis, and UI/UX design. Supported by mentorship on real-world projects.</p>
+                  <p class="text-gray-800 text-sm mb-3">Dedicated emerging talent bringing fresh perspectives in
+                    software development, data analysis, and UI/UX design. Supported by mentorship on real-world
+                    projects.</p>
                 </div>
               </div>
               <div class="team-member-contact">
@@ -922,11 +1065,13 @@
         <div class="animate-fade-in">
           <span class="text-primary-300 font-semibold">GET IN TOUCH</span>
           <h2 class="text-3xl md:text-4xl font-normal text-white mt-2 mb-6">Let's Start a Conversation</h2>
-          <p class="text-lg text-primary-200 mb-8">Ready to transform your business with innovative technology solutions? Contact us today to schedule a consultation.</p>
-          
-          <div class="space-y-6">
+          <p class="text-lg text-primary-200 mb-8">Ready to transform your business with innovative technology
+            solutions? Contact us today to schedule a consultation.</p>
+
+          <div class="space-y-6 hidden md:block">
             <div class="flex gap-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
                 <i class="fas fa-map-marker-alt"></i>
               </div>
               <div>
@@ -934,9 +1079,10 @@
                 <p class="text-primary-300">Remote-first with team members across the United States</p>
               </div>
             </div>
-            
+
             <div class="flex gap-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
                 <i class="fas fa-envelope"></i>
               </div>
               <div>
@@ -944,9 +1090,10 @@
                 <p class="text-primary-300">globytesolution@gmail.com</p>
               </div>
             </div>
-            
+
             <div class="flex gap-4">
-              <div class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
                 <i class="fas fa-phone-alt"></i>
               </div>
               <div>
@@ -955,50 +1102,62 @@
               </div>
             </div>
           </div>
-          
-          <div class="mt-8 pt-6 border-t border-primary-800">
+
+          <div class="mt-8 pt-6 border-t border-primary-800 hidden md:block">
             <h3 class="font-semibold text-white mb-4">Follow Us</h3>
             <div class="flex gap-4">
-              <a href="#" class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
+              <a href="#"
+                class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
                 <i class="fab fa-linkedin-in"></i>
               </a>
-              <a href="#" class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
+              <a href="#"
+                class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
                 <i class="fab fa-twitter"></i>
               </a>
-              <a href="#" class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
+              <a href="#"
+                class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
                 <i class="fab fa-github"></i>
               </a>
             </div>
           </div>
         </div>
-        
+
         <div class="bg-white rounded-2xl shadow-large p-8 animate-slide-up text-black">
           <h3 class="text-2xl font-normal text-black mb-6">Send Us a Message</h3>
           <form class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="first-name" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                <input type="text" id="first-name" class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black" placeholder="Your first name">
+                <input type="text" id="first-name"
+                  class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                  placeholder="Your first name">
               </div>
               <div>
                 <label for="last-name" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                <input type="text" id="last-name" class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black" placeholder="Your last name">
+                <input type="text" id="last-name"
+                  class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                  placeholder="Your last name">
               </div>
             </div>
 
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-              <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black" placeholder="you@example.com">
+              <input type="email" id="email"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                placeholder="you@example.com">
             </div>
 
             <div>
               <label for="company" class="block text-sm font-medium text-gray-700 mb-2">Company</label>
-              <input type="text" id="company" class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black" placeholder="Your company name">
+              <input type="text" id="company"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                placeholder="Your company name">
             </div>
 
             <div>
               <label for="service" class="block text-sm font-medium text-black mb-2">Service of Interest</label>
-              <select id="service" class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black bg-white">
+              <select id="service"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black bg-white">
                 <option value="">Select a service</option>
                 <option value="strategy">IT Strategy & Planning</option>
                 <option value="integration">Systems Integration</option>
@@ -1011,10 +1170,14 @@
 
             <div>
               <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
-              <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black" placeholder="Tell us about your project or requirements"></textarea>
+              <textarea id="message" rows="4"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                placeholder="Tell us about your project or requirements"></textarea>
             </div>
 
-            <button type="submit" class="w-full px-6 py-3.5 rounded-lg btn-primary text-white font-semibold shadow-medium">Send Message</button>
+            <button type="submit"
+              class="w-full px-6 py-3.5 rounded-lg btn-primary text-white font-semibold shadow-medium">Send
+              Message</button>
           </form>
         </div>
       </div>
@@ -1025,44 +1188,51 @@
   <footer class="bg-primary-800 text-white py-12">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div class="md:col-span-2">
+        <div class="md:col-span-2 flex flex-col items-center md:items-start text-center md:text-left">
           <a href="#home" class="inline-block mb-6">
-            <img
-              src="https://s3.eu-north-1.amazonaws.com/www.globytesolution.com/Images/globytelogolarge-05.png"
-              alt="GLOBYTE logo"
-              class="object-contain h-8 max-w-[140px] invert brightness-0"
-              loading="lazy"
-              width="140"
-              height="32"
-            />
+            <img src="https://s3.eu-north-1.amazonaws.com/www.globytesolution.com/Images/globytelogolarge-05.png"
+              alt="GLOBYTE logo" class="object-contain h-12 md:h-10 max-w-[200px] invert brightness-0" loading="lazy"
+              width="240" height="120" />
           </a>
-          <p class="text-primary-300 max-w-md mb-6">Globyte is an IT and business consulting firm dedicated to helping organizations modernize their technology, strengthen cybersecurity, streamline operations, and achieve sustainable growth. We deliver a full suite of services designed to align IT infrastructure with business strategy, driving efficiency, resilience, and long-term success.</p>
-          <div class="flex gap-4">
-            <a href="#" class="w-10 h-10 rounded-full bg-primary-700 flex items-center justify-center text-primary-300 hover:bg-primary-600 hover:text-white transition">
+          <p class="text-primary-300 max-w-md mb-6 hidden md:block">Globyte is an IT and business consulting firm
+            dedicated to helping
+            organizations modernize their technology, strengthen cybersecurity, streamline operations, and achieve
+            sustainable growth. We deliver a full suite of services designed to align IT infrastructure with business
+            strategy, driving efficiency, resilience, and long-term success.</p>
+          <div class="flex gap-4 justify-center md:justify-start">
+            <a href="#"
+              class="w-8 h-8 rounded-full bg-primary-700 flex items-center justify-center text-primary-300 hover:bg-primary-600 hover:text-white transition text-sm">
               <i class="fab fa-linkedin-in"></i>
             </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-primary-700 flex items-center justify-center text-primary-300 hover:bg-primary-600 hover:text-white transition">
+            <a href="#"
+              class="w-8 h-8 rounded-full bg-primary-700 flex items-center justify-center text-primary-300 hover:bg-primary-600 hover:text-white transition text-sm">
               <i class="fab fa-twitter"></i>
             </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-primary-700 flex items-center justify-center text-primary-300 hover:bg-primary-600 hover:text-white transition">
+            <a href="#"
+              class="w-8 h-8 rounded-full bg-primary-700 flex items-center justify-center text-primary-300 hover:bg-primary-600 hover:text-white transition text-sm">
               <i class="fab fa-github"></i>
             </a>
           </div>
         </div>
-        
-        <div>
+
+        <div class="hidden md:block">
           <h3 class="font-semibold text-white mb-4">Services</h3>
           <ul class="space-y-3">
-            <li><a href="#services" class="text-primary-300 hover:text-white transition">IT Strategy & Planning</a></li>
-            <li><a href="#services" class="text-primary-300 hover:text-white transition">Systems Integration</a></li>
-            <li><a href="#services" class="text-primary-300 hover:text-white transition">Cybersecurity Services</a></li>
+            <li><a href="#services" class="text-primary-300 hover:text-white transition">IT Strategy & Planning</a>
+            </li>
+            <li><a href="#services" class="text-primary-300 hover:text-white transition">Systems Integration</a>
+            </li>
+            <li><a href="#services" class="text-primary-300 hover:text-white transition">Cybersecurity Services</a>
+            </li>
             <li><a href="#services" class="text-primary-300 hover:text-white transition">Cloud Computing</a></li>
-            <li><a href="#services" class="text-primary-300 hover:text-white transition">Managed IT Services</a></li>
-            <li><a href="#services" class="text-primary-300 hover:text-white transition">Software Development</a></li>
+            <li><a href="#services" class="text-primary-300 hover:text-white transition">Managed IT Services</a>
+            </li>
+            <li><a href="#services" class="text-primary-300 hover:text-white transition">Software Development</a>
+            </li>
           </ul>
         </div>
-        
-        <div>
+
+        <div class="hidden md:block">
           <h3 class="font-semibold text-white mb-4">Company</h3>
           <ul class="space-y-3">
             <li><a href="#about" class="text-primary-300 hover:text-white transition">About Us</a></li>
@@ -1071,7 +1241,7 @@
           </ul>
         </div>
       </div>
-      
+
       <div class="border-t border-primary-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
         <p class="text-primary-400 text-sm">© <span id="current-year"></span> GLOBYTE. All rights reserved.</p>
         <script>
@@ -1086,7 +1256,8 @@
   </footer>
 
   <!-- Back to Top Button -->
-  <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary-500 text-white rounded-full shadow-large flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-primary-600">
+  <button id="back-to-top"
+    class="fixed bottom-8 right-8 w-12 h-12 bg-primary-500 text-white rounded-full shadow-large flex items-center justify-center transition-all duration-300 opacity-0 invisible hover:bg-primary-600">
     <i class="fas fa-chevron-up"></i>
   </button>
 
@@ -1095,13 +1266,13 @@
     // Mobile menu toggle
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
-    
+
     menuToggle.addEventListener('click', () => {
       const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
       menuToggle.setAttribute('aria-expanded', !isExpanded);
       mobileMenu.classList.toggle('hidden');
     });
-    
+
     // Close mobile menu when clicking on a link
     const mobileLinks = mobileMenu.querySelectorAll('a');
     mobileLinks.forEach(link => {
@@ -1110,10 +1281,10 @@
         menuToggle.setAttribute('aria-expanded', 'false');
       });
     });
-    
+
     // Back to top button
     const backToTopButton = document.getElementById('back-to-top');
-    
+
     window.addEventListener('scroll', () => {
       if (window.pageYOffset > 300) {
         backToTopButton.classList.remove('opacity-0', 'invisible');
@@ -1123,27 +1294,27 @@
         backToTopButton.classList.add('opacity-0', 'invisible');
       }
     });
-    
+
     backToTopButton.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
     });
-    
+
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
-        
+
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
           const headerHeight = document.getElementById('header').offsetHeight;
           const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-          
+
           window.scrollTo({
             top: targetPosition,
             behavior: 'smooth'
@@ -1151,10 +1322,10 @@
         }
       });
     });
-    
+
     // Header scroll effect
     const header = document.getElementById('header');
-    
+
     window.addEventListener('scroll', () => {
       if (window.pageYOffset > 50) {
         header.classList.add('shadow-medium');
@@ -1162,10 +1333,10 @@
         header.classList.remove('shadow-medium');
       }
     });
-    
+
     // Team card flip functionality
     document.querySelectorAll('.team-card').forEach(card => {
-      card.addEventListener('click', function(event) {
+      card.addEventListener('click', function (event) {
         // This prevents the card from flipping if a link was clicked
         if (event.target.closest('a')) {
           return;
@@ -1173,6 +1344,53 @@
         this.classList.toggle('flipped');
       });
     });
+
+    // Mobile Carousel Auto-Slide
+    const carousel = document.querySelector('.team-carousel');
+    if (carousel) {
+      let autoSlideInterval;
+
+      // Auto slide function
+      const startAutoSlide = () => {
+        // Only trigger on mobile width
+        if (window.innerWidth > 768) return;
+
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => {
+          if (carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth - 10) { // -10 tolerance
+            carousel.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            carousel.scrollBy({ left: 300, behavior: 'smooth' }); // Approximate card width
+          }
+        }, 3000); // 3 seconds
+      };
+
+      // Reset auto slide on user interaction
+      carousel.addEventListener('scroll', () => {
+        // Only clear if user is actively scrolling (hard to detect perfectly in vanilla without complex logic, 
+        // but resetting on scroll events helps pause it briefly)
+        // For simplicity, we just let it run or rely on touchstart to pause
+      });
+
+      carousel.addEventListener('touchstart', () => {
+        clearInterval(autoSlideInterval);
+      });
+
+      carousel.addEventListener('touchend', () => {
+        // Restart after a delay
+        setTimeout(startAutoSlide, 5000);
+      });
+
+      // Start initial
+      startAutoSlide();
+
+      // Handle resize
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) clearInterval(autoSlideInterval);
+        else startAutoSlide();
+      });
+    }
   </script>
 </body>
+
 </html>
