@@ -1,0 +1,24 @@
+## This workflow runs when code is merged into your main branch (or whenever a commit is pushed directly to it). 
+## It deploys the final, tested code to the live (production) channel of your Firebase site.
+
+name: Deploy to Firebase Hosting on merge
+
+on:
+  push:
+    branches:
+      - main # Change 'main' if your production branch is named differently
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v4
+      # --- Deploy to Live Channel ---
+      - name: 🚀 Deploy to Firebase Live Channel
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GLOBYTE }}
+          channelId: live
+          projectId: globyteus
