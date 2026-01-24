@@ -21,7 +21,6 @@ The website serves as a digital gateway for Globyte's services, providing potent
 
 ## 📁 Project Structure
 - `index.html`: Main landing page content and layout.
-- `chatbot.js`: Logic for the AI-powered chatbot.
 - `firebase.json`: Configuration for Firebase Hosting.
 - `.github/workflows/`: CI/CD pipelines for automated deployment.
 - `Globyte images/`: Visual assets and team member photography.
@@ -53,7 +52,7 @@ The project is configured for automated deployment to Firebase Hosting.
 - **Production**: Merges to the `main` branch trigger a production deployment via `.github/workflows/firebase-hosting-merge.yml`.
 
 ## 🤝 Contact
-- **Email**: globytesolution@gmail.com
+- **Email**: globyteconsulting@gmail.com
 - **Phone**: +1 (720) 280-3704
 - **Website**: [www.globytesolution.com](https://www.globytesolution.com)
 
