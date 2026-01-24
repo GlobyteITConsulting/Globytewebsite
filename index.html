@@ -97,6 +97,11 @@
       /* Deep dark blue */
     }
 
+    html {
+      /* Prevent horizontal scroll at the root level */
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'PT Sans', system-ui, -apple-system, sans-serif;
       color: var(--secondary);
@@ -105,6 +110,8 @@
       font-weight: 400;
       /* Mobile text size increase */
       font-size: 18px;
+      /* Prevent horizontal scroll on all viewports */
+      overflow-x: hidden;
     }
 
     @media (min-width: 768px) {
@@ -338,10 +345,6 @@
     @media (max-width: 768px) {
 
       /* Styles for mobile */
-      body {
-        overflow-x: hidden;
-      }
-
       img {
         max-width: 100%;
         height: auto;
