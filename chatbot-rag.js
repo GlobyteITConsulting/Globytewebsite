@@ -214,7 +214,7 @@ Instructions:
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: "llama-3.1-8b-instant",
+                    model: "llama3-8b-8192",
                     messages: messages,
                     temperature: 0.7,
                     max_tokens: 1024
@@ -225,6 +225,8 @@ Instructions:
                 data = await response.json();
                 break; // success, exit loop
             } else {
+                const errorBody = await response.text();
+                console.error('Groq API error response:', errorBody);
                 lastError = new Error(`API error: ${response.status} ${response.statusText}`);
                 console.warn(`⚠️ API key index ${currentKeyIndex} failed with status: ${response.status}`);
                 
