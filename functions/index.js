@@ -1,65 +1,54 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const axios = require('axios');
 
 admin.initializeApp();
 
 const db = admin.firestore();
 
-// Configuration - Placeholders will be replaced by GitHub Actions
-// GitHub Secrets: HUGGINGFACE_API_KEY, OPENAI_API_KEY (optional)
-const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY || '__HUGGINGFACE_API_KEY__';
-const HUGGINGFACE_EMBEDDING_URL = 'https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2';
-
-// Alternative: Use OpenAI embeddings (uncomment if preferred)
-// const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '__OPENAI_API_KEY__';
-// const OPENAI_EMBEDDING_URL = 'https://api.openai.com/v1/embeddings';
+/**
+ * Extract keywords from query for matching
+ */
+function extractQueryKeywords(text) {
+  const stopWords = new Set([
+    'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
+    'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been', 'be', 'have', 'has', 'had',
+    'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must',
+    'what', 'which', 'who', 'whom', 'how', 'why', 'when', 'where',
+    'i', 'you', 'he', 'she', 'it', 'we', 'they', 'this', 'that', 'these', 'those'
+  ]);
+  
+  return text.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(word => word.length > 2 && !stopWords.has(word));
+}
 
 /**
- * Generate embedding for text using Hugging Face API
+ * Calculate keyword match score between query and chunk
  */
-async function generateEmbedding(text) {
-  try {
-    const response = await axios.post(
-      HUGGINGFACE_EMBEDDING_URL,
-      { inputs: text },
-      {
-        headers: {
-          'Authorization': `Bearer ${HUGGINGFACE_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
+function calculateMatchScore(queryKeywords, chunkKeywords) {
+  if (!chunkKeywords || chunkKeywords.length === 0) return 0;
+  
+  const chunkKeywordSet = new Set(chunkKeywords);
+  let matches = 0;
+  
+  queryKeywords.forEach(keyword => {
+    if (chunkKeywordSet.has(keyword)) {
+      matches++;
+    }
+    // Also check for partial matches
+    chunkKeywords.forEach(chunkKw => {
+      if (chunkKw.includes(keyword) || keyword.includes(chunkKw)) {
+        matches += 0.5;
       }
-    );
-    
-    // Hugging Face returns array of embeddings, take first one
-    return Array.isArray(response.data) ? response.data[0] : response.data;
-  } catch (error) {
-    console.error('Error generating embedding:', error.response?.data || error.message);
-    throw new Error('Failed to generate embedding');
-  }
+    });
+  });
+  
+  return matches / Math.max(queryKeywords.length, 1);
 }
 
 /**
- * Calculate cosine similarity between two vectors
- */
-function cosineSimilarity(vecA, vecB) {
-  if (vecA.length !== vecB.length) return 0;
-  
-  let dotProduct = 0;
-  let normA = 0;
-  let normB = 0;
-  
-  for (let i = 0; i < vecA.length; i++) {
-    dotProduct += vecA[i] * vecB[i];
-    normA += vecA[i] * vecA[i];
-    normB += vecB[i] * vecB[i];
-  }
-  
-  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-}
-
-/**
- * Search for relevant document chunks using vector similarity
+ * Search for relevant document chunks using keyword matching
  */
 exports.searchDocuments = functions.https.onCall(async (data, context) => {
   try {
@@ -69,8 +58,8 @@ exports.searchDocuments = functions.https.onCall(async (data, context) => {
       throw new functions.https.HttpsError('invalid-argument', 'Query is required');
     }
 
-    // Generate embedding for the query
-    const queryEmbedding = await generateEmbedding(query);
+    // Extract keywords from query
+    const queryKeywords = extractQueryKeywords(query);
     
     // Get all document chunks from Firestore
     const chunksSnapshot = await db.collection('documentChunks').get();
@@ -79,26 +68,36 @@ exports.searchDocuments = functions.https.onCall(async (data, context) => {
       return { chunks: [], message: 'No documents indexed yet. Please run the indexing script first.' };
     }
 
-    // Calculate similarity scores
-    const similarities = [];
+    // Calculate match scores
+    const matches = [];
     chunksSnapshot.forEach(doc => {
       const chunkData = doc.data();
-      const chunkEmbedding = chunkData.embedding;
+      const chunkKeywords = chunkData.keywords || [];
+      const chunkText = chunkData.text || '';
       
-      if (chunkEmbedding && Array.isArray(chunkEmbedding)) {
-        const similarity = cosineSimilarity(queryEmbedding, chunkEmbedding);
-        similarities.push({
+      // Calculate keyword match score
+      let score = calculateMatchScore(queryKeywords, chunkKeywords);
+      
+      // Boost score if query words appear directly in text
+      queryKeywords.forEach(kw => {
+        if (chunkText.toLowerCase().includes(kw)) {
+          score += 0.3;
+        }
+      });
+      
+      if (score > 0) {
+        matches.push({
           id: doc.id,
           text: chunkData.text,
           metadata: chunkData.metadata || {},
-          similarity: similarity
+          similarity: score
         });
       }
     });
 
-    // Sort by similarity and return top K
-    similarities.sort((a, b) => b.similarity - a.similarity);
-    const topChunks = similarities.slice(0, topK).filter(item => item.similarity > 0.3); // Threshold
+    // Sort by score and return top K
+    matches.sort((a, b) => b.similarity - a.similarity);
+    const topChunks = matches.slice(0, topK);
 
     return {
       chunks: topChunks,
