@@ -58,7 +58,7 @@ npm install
 All API keys are managed via GitHub Secrets. See `GITHUB_SECRETS_SETUP.md` for detailed instructions.
 
 **Required Secrets:**
-- `HUGGINGFACE_API_KEY`
+- `HUGGINGFACE_API_KEY` We might not need this
 - `GROQ_API_KEY_1`, `GROQ_API_KEY_2`, `GROQ_API_KEY_3`
 - `GROQ_API_URL` (optional, has default)
 - `FIREBASE_FUNCTION_URL` (set after first deployment)
