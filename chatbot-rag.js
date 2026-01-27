@@ -24,7 +24,7 @@ const GEMINI_API_KEY_PLACEHOLDER = '__GEMINI_API_KEY__';
 const GEMINI_API_KEY = (GEMINI_API_KEY_PLACEHOLDER.startsWith('__')) 
     ? '' // Will be replaced by GitHub Actions
     : GEMINI_API_KEY_PLACEHOLDER;
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 // ===========================================
 // GROQ API CONFIGURATION (COMMENTED OUT - KEPT FOR FUTURE USE)
