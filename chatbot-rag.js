@@ -113,29 +113,47 @@ function moveToNextApiKey() {
  */
 async function searchRelevantChunks(query) {
     try {
+        console.log('🔍 Searching for:', query);
+        console.log('📡 Firebase SDK available:', !!searchDocumentsFunction);
+        console.log('🔗 Function URL:', FIREBASE_FUNCTION_URL);
+        
         // Option 1: Using Firebase Functions SDK (if available)
         if (searchDocumentsFunction) {
-            const result = await searchDocumentsFunction({ query, topK: 3 });
+            console.log('Using Firebase SDK...');
+            const result = await searchDocumentsFunction({ query, topK: 5 });
+            console.log('SDK Result:', result);
             return result.data.chunks || [];
         }
         
         // Option 2: Direct HTTP call to Cloud Function
-        const functionUrl = FIREBASE_FUNCTION_URL || 'YOUR_FUNCTION_URL_HERE';
+        const functionUrl = FIREBASE_FUNCTION_URL;
         
+        // Skip if URL is still a placeholder
+        if (!functionUrl || functionUrl.startsWith('__')) {
+            console.error('❌ FIREBASE_FUNCTION_URL not configured');
+            return [];
+        }
+        
+        console.log('Using HTTP call to:', functionUrl);
         const response = await fetch(`${functionUrl}/searchDocuments`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ data: { query, topK: 3 } })
+            body: JSON.stringify({ data: { query, topK: 5 } })
         });
         
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Response error:', errorText);
             throw new Error('Search function failed');
         }
         
         const result = await response.json();
-        return result.chunks || [];
+        console.log('HTTP Result:', result);
+        return result.result?.chunks || result.chunks || [];
     } catch (error) {
         console.error('Error searching documents:', error);
         return [];
