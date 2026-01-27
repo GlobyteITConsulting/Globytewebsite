@@ -205,6 +205,16 @@ Instructions:
     while (attempts < maxAttempts) {
         const apiKey = getCurrentApiKey();
         console.log(`🔑 Attempt ${attempts + 1}: Using API key index: ${currentKeyIndex}`);
+        console.log('📤 API URL:', GROQ_API_URL);
+        console.log('📤 API Key (first 10 chars):', apiKey?.substring(0, 10));
+        
+        const requestBody = {
+            model: "llama3-8b-8192",
+            messages: messages,
+            temperature: 0.7,
+            max_tokens: 1024
+        };
+        console.log('📤 Request body:', JSON.stringify(requestBody, null, 2));
         
         try {
             const response = await fetch(GROQ_API_URL, {
@@ -213,12 +223,7 @@ Instructions:
                     'Authorization': `Bearer ${apiKey}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    model: "llama3-8b-8192",
-                    messages: messages,
-                    temperature: 0.7,
-                    max_tokens: 1024
-                })
+                body: JSON.stringify(requestBody)
             });
 
             if (response.ok) {
