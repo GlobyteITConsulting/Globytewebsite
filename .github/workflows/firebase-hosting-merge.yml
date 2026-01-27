@@ -65,11 +65,14 @@ jobs:
           
           # Replace placeholders in chatbot-rag.js
           if [ -f "chatbot-rag.js" ]; then
-            sed -i "s|__GROQ_API_URL__|${{ secrets.GROQ_API_URL || 'https://api.groq.com/openai/v1/chat/completions' }}|g" chatbot-rag.js
+            # Google Gemini API key
+            sed -i "s|__GEMINI_API_KEY__|${{ secrets.GEMINI_API_KEY }}|g" chatbot-rag.js
+            # Firebase Function URL
+            sed -i "s|__FIREBASE_FUNCTION_URL__|${FUNCTION_URL}|g" chatbot-rag.js
+            # Groq keys (commented out but still replace if present)
             sed -i "s|__GROQ_API_KEY_1__|${{ secrets.GROQ_API_KEY_1 }}|g" chatbot-rag.js
             sed -i "s|__GROQ_API_KEY_2__|${{ secrets.GROQ_API_KEY_2 }}|g" chatbot-rag.js
             sed -i "s|__GROQ_API_KEY_3__|${{ secrets.GROQ_API_KEY_3 }}|g" chatbot-rag.js
-            sed -i "s|__FIREBASE_FUNCTION_URL__|${FUNCTION_URL}|g" chatbot-rag.js
             echo "✅ Replaced placeholders in chatbot-rag.js"
           fi
           

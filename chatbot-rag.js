@@ -17,6 +17,19 @@ const sendChatBtn = document.getElementById('sendChat');
 // Store chat history
 let chatHistory = [];
 
+// ===========================================
+// GOOGLE GEMINI API CONFIGURATION
+// ===========================================
+const GEMINI_API_KEY_PLACEHOLDER = '__GEMINI_API_KEY__';
+const GEMINI_API_KEY = (GEMINI_API_KEY_PLACEHOLDER.startsWith('__')) 
+    ? '' // Will be replaced by GitHub Actions
+    : GEMINI_API_KEY_PLACEHOLDER;
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+
+// ===========================================
+// GROQ API CONFIGURATION (COMMENTED OUT - KEPT FOR FUTURE USE)
+// ===========================================
+/*
 // API Configuration - Placeholders will be replaced by GitHub Actions
 // GitHub Secrets: GROQ_API_URL, GROQ_API_KEY_1, GROQ_API_KEY_2, GROQ_API_KEY_3, FIREBASE_FUNCTION_URL
 const GROQ_API_URL_PLACEHOLDER = '__GROQ_API_URL__';
@@ -32,8 +45,23 @@ const GROQ_API_KEYS = [
     '__GROQ_API_KEY_3__'
 ].filter(key => key && !key.startsWith('__') && !key.endsWith('__'));
 
+// Get current API key
+function getCurrentApiKey() {
+    return GROQ_API_KEYS[currentKeyIndex];
+}
+
+// Move to next API key
+function moveToNextApiKey() {
+    currentKeyIndex = (currentKeyIndex + 1) % GROQ_API_KEYS.length;
+    console.log(`🔑 Moved to API key index: ${currentKeyIndex}`);
+}
+*/
+
 // Firebase Function URL - placeholder will be replaced
-const FIREBASE_FUNCTION_URL = '__FIREBASE_FUNCTION_URL__';
+const FIREBASE_FUNCTION_URL_PLACEHOLDER = '__FIREBASE_FUNCTION_URL__';
+const FIREBASE_FUNCTION_URL = (FIREBASE_FUNCTION_URL_PLACEHOLDER.startsWith('__'))
+    ? ''
+    : FIREBASE_FUNCTION_URL_PLACEHOLDER;
 
 // Initialize Firebase Functions (if using Firebase SDK)
 let searchDocumentsFunction = null;
@@ -96,17 +124,6 @@ function hideLoadingIndicator() {
     if (loadingElement) loadingElement.remove();
 }
 
-// Get current API key
-function getCurrentApiKey() {
-    return GROQ_API_KEYS[currentKeyIndex];
-}
-
-// Move to next API key
-function moveToNextApiKey() {
-    currentKeyIndex = (currentKeyIndex + 1) % GROQ_API_KEYS.length;
-    console.log(`🔑 Moved to API key index: ${currentKeyIndex}`);
-}
-
 // -----------------------------
 // RAG Functions
 // -----------------------------
@@ -131,7 +148,7 @@ async function searchRelevantChunks(query) {
         // Option 2: Direct HTTP call to Cloud Function
         const functionUrl = FIREBASE_FUNCTION_URL;
         
-        // Skip if URL is still a placeholder
+        // Skip if URL is still a placeholder or empty
         if (!functionUrl || functionUrl.startsWith('__')) {
             console.error('❌ FIREBASE_FUNCTION_URL not configured');
             return [];
@@ -164,7 +181,7 @@ async function searchRelevantChunks(query) {
 }
 
 /**
- * Generate response using RAG + Groq
+ * Generate response using RAG + Google Gemini
  */
 async function generateRAGResponse(query, relevantChunks) {
     // Build context from retrieved chunks
@@ -172,7 +189,7 @@ async function generateRAGResponse(query, relevantChunks) {
         .map((chunk, index) => `[Document ${index + 1}]\n${chunk.text}`)
         .join('\n\n---\n\n');
 
-    const systemPrompt = `You are a helpful customer service assistant for Globyte IT and Business Consulting, a consulting firm dedicated to helping organizations modernize technology, strengthen cybersecurity, streamline operations, and achieve sustainable growth.
+    const prompt = `You are a helpful customer service assistant for Globyte IT and Business Consulting, a consulting firm dedicated to helping organizations modernize technology, strengthen cybersecurity, streamline operations, and achieve sustainable growth.
 
 Use the following context from Globyte's business plan and documentation to answer questions accurately and helpfully:
 
@@ -183,17 +200,73 @@ Instructions:
 - If the context doesn't contain relevant information, politely say so and offer to connect the user with a human representative
 - Keep responses concise, professional, and focused on the user's question
 - If asked about services, pricing, or specific details not in the context, suggest they contact the team directly
-- Always maintain a friendly and professional tone`;
+- Always maintain a friendly and professional tone
+
+User Question: ${query}
+
+Please provide a helpful response:`;
+
+    console.log('📤 Using Google Gemini API');
+    console.log('📤 API Key configured:', !!GEMINI_API_KEY);
+    
+    if (!GEMINI_API_KEY) {
+        throw new Error('GEMINI_API_KEY not configured');
+    }
+
+    try {
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 1024,
+                }
+            })
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text();
+            console.error('Gemini API error response:', errorBody);
+            throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('Gemini response:', data);
+
+        if (data.candidates && data.candidates.length > 0 && data.candidates[0].content) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            throw new Error('Invalid response from Gemini');
+        }
+    } catch (err) {
+        console.error('Error calling Gemini:', err);
+        throw err;
+    }
+}
+
+/*
+// ===========================================
+// GROQ GENERATE RESPONSE (COMMENTED OUT - KEPT FOR FUTURE USE)
+// ===========================================
+async function generateRAGResponseWithGroq(query, relevantChunks) {
+    // Build context from retrieved chunks
+    const context = relevantChunks
+        .map((chunk, index) => `[Document ${index + 1}]\n${chunk.text}`)
+        .join('\n\n---\n\n');
+
+    const systemPrompt = `You are a helpful customer service assistant for Globyte IT and Business Consulting...`;
 
     const messages = [
-        {
-            role: "system",
-            content: systemPrompt
-        },
-        {
-            role: "user",
-            content: query
-        }
+        { role: "system", content: systemPrompt },
+        { role: "user", content: query }
     ];
 
     let data = null;
@@ -201,20 +274,8 @@ Instructions:
     let attempts = 0;
     const maxAttempts = GROQ_API_KEYS.length;
 
-    // Try all keys until we get a successful response
     while (attempts < maxAttempts) {
         const apiKey = getCurrentApiKey();
-        console.log(`🔑 Attempt ${attempts + 1}: Using API key index: ${currentKeyIndex}`);
-        console.log('📤 API URL:', GROQ_API_URL);
-        console.log('📤 API Key (first 10 chars):', apiKey?.substring(0, 10));
-        
-        const requestBody = {
-            model: "llama3-8b-8192",
-            messages: messages,
-            temperature: 0.7,
-            max_tokens: 1024
-        };
-        console.log('📤 Request body:', JSON.stringify(requestBody, null, 2));
         
         try {
             const response = await fetch(GROQ_API_URL, {
@@ -223,25 +284,26 @@ Instructions:
                     'Authorization': `Bearer ${apiKey}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify({
+                    model: "llama3-8b-8192",
+                    messages: messages,
+                    temperature: 0.7,
+                    max_tokens: 1024
+                })
             });
 
             if (response.ok) {
                 data = await response.json();
-                break; // success, exit loop
+                break;
             } else {
                 const errorBody = await response.text();
                 console.error('Groq API error response:', errorBody);
-                lastError = new Error(`API error: ${response.status} ${response.statusText}`);
-                console.warn(`⚠️ API key index ${currentKeyIndex} failed with status: ${response.status}`);
-                
+                lastError = new Error(`API error: ${response.status}`);
                 moveToNextApiKey();
                 attempts++;
             }
         } catch (err) {
             lastError = err;
-            console.warn(`⚠️ API key index ${currentKeyIndex} failed with error: ${err.message}`);
-            
             moveToNextApiKey();
             attempts++;
         }
@@ -253,6 +315,7 @@ Instructions:
         throw lastError || new Error('All API keys failed');
     }
 }
+*/
 
 // -----------------------------
 // Chat Logic
@@ -298,8 +361,8 @@ async function sendMessage() {
 
         console.log(`✅ Found ${relevantChunks.length} relevant chunks`);
 
-        // Generate response using RAG
-        console.log('🤖 Generating response with RAG...');
+        // Generate response using RAG + Gemini
+        console.log('🤖 Generating response with RAG + Gemini...');
         const botResponse = await generateRAGResponse(prompt, relevantChunks);
         
         hideLoadingIndicator();
