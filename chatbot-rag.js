@@ -19,7 +19,10 @@ let chatHistory = [];
 
 // API Configuration - Placeholders will be replaced by GitHub Actions
 // GitHub Secrets: GROQ_API_URL, GROQ_API_KEY_1, GROQ_API_KEY_2, GROQ_API_KEY_3, FIREBASE_FUNCTION_URL
-const GROQ_API_URL = '__GROQ_API_URL__' || 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_API_URL_PLACEHOLDER = '__GROQ_API_URL__';
+const GROQ_API_URL = (GROQ_API_URL_PLACEHOLDER.startsWith('__')) 
+    ? 'https://api.groq.com/openai/v1/chat/completions' 
+    : GROQ_API_URL_PLACEHOLDER;
 let currentKeyIndex = 0;
 
 // Load API keys - placeholders will be replaced during deployment

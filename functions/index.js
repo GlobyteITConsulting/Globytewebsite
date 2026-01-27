@@ -52,9 +52,19 @@ function calculateMatchScore(queryKeywords, chunkKeywords) {
  */
 exports.searchDocuments = functions.https.onCall(async (data, context) => {
   try {
-    const { query, topK = 3 } = data;
+    // Log incoming data for debugging
+    console.log('Received data:', JSON.stringify(data));
+    
+    // Handle different data formats (SDK vs HTTP call)
+    const requestData = data || {};
+    const query = requestData.query || (typeof data === 'string' ? data : null);
+    const topK = requestData.topK || 5;
+    
+    console.log('Extracted query:', query);
+    console.log('TopK:', topK);
     
     if (!query || typeof query !== 'string') {
+      console.error('Query validation failed. Data received:', data);
       throw new functions.https.HttpsError('invalid-argument', 'Query is required');
     }
 
