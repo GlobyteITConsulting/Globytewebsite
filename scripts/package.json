@@ -1,0 +1,15 @@
+{
+  "name": "globyte-document-processor",
+  "version": "1.0.0",
+  "description": "Script to process documents and generate embeddings for RAG system",
+  "main": "processDocument.js",
+  "scripts": {
+    "process": "node processDocument.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "mammoth": "^1.6.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  }
+}

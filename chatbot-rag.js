@@ -1,0 +1,300 @@
+// =============================
+// Chatbot - Globyte Assistant with RAG
+// =============================
+
+// Initialize Firebase (you'll need to add Firebase SDK to your HTML)
+// Make sure to include: <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+// <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-functions.js"></script>
+
+// DOM Elements
+const chatbotFab = document.getElementById('chatbotFab');
+const chatbotContainer = document.getElementById('chatbotContainer');
+const closeChatbotBtn = document.getElementById('closeChatbot');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const sendChatBtn = document.getElementById('sendChat');
+
+// Store chat history
+let chatHistory = [];
+
+// API Configuration - Placeholders will be replaced by GitHub Actions
+// GitHub Secrets: GROQ_API_URL, GROQ_API_KEY_1, GROQ_API_KEY_2, GROQ_API_KEY_3, FIREBASE_FUNCTION_URL
+const GROQ_API_URL = '__GROQ_API_URL__' || 'https://api.groq.com/openai/v1/chat/completions';
+let currentKeyIndex = 0;
+
+// Load API keys - placeholders will be replaced during deployment
+const GROQ_API_KEYS = [
+    '__GROQ_API_KEY_1__',
+    '__GROQ_API_KEY_2__',
+    '__GROQ_API_KEY_3__'
+].filter(key => key && !key.startsWith('__') && !key.endsWith('__'));
+
+// Firebase Function URL - placeholder will be replaced
+const FIREBASE_FUNCTION_URL = '__FIREBASE_FUNCTION_URL__';
+
+// Initialize Firebase Functions (if using Firebase SDK)
+let searchDocumentsFunction = null;
+if (typeof firebase !== 'undefined' && firebase.functions) {
+    searchDocumentsFunction = firebase.functions().httpsCallable('searchDocuments');
+}
+
+// -----------------------------
+// Utility Functions
+// -----------------------------
+
+// Toggle chatbot visibility
+function toggleChatbot() {
+    chatbotContainer.classList.toggle('hidden');
+    if (!chatbotContainer.classList.contains('hidden')) {
+        if (chatHistory.length === 0) {
+            appendMessage('Hello! Welcome to Globyte. How can I help you today?', 'bot');
+        }
+        chatInput.focus();
+    }
+}
+
+// Append messages with Tailwind styling
+function appendMessage(text, sender) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('flex');
+
+    const bubble = document.createElement('div');
+    if (sender === 'user') {
+        bubble.className = "bg-[#3A3E56] text-white px-3 py-2 rounded-lg w-fit ml-auto my-1";
+    } else {
+        bubble.className = "bg-[#85B8B2] text-white px-3 py-2 rounded-lg w-fit my-1";
+    }
+    bubble.textContent = text;
+
+    messageElement.appendChild(bubble);
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Save history
+    chatHistory.push({ text, sender });
+}
+
+// Show loading indicator
+function showLoadingIndicator() {
+    const loadingElement = document.createElement('div');
+    loadingElement.id = 'loadingIndicator';
+    loadingElement.className = "flex space-x-1 mt-2";
+    loadingElement.innerHTML = `
+        <span class="w-2 h-2 bg-[#85B8B2] rounded-full animate-bounce"></span>
+        <span class="w-2 h-2 bg-[#85B8B2] rounded-full animate-bounce delay-150"></span>
+        <span class="w-2 h-2 bg-[#85B8B2] rounded-full animate-bounce delay-300"></span>
+    `;
+    chatMessages.appendChild(loadingElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideLoadingIndicator() {
+    const loadingElement = document.getElementById('loadingIndicator');
+    if (loadingElement) loadingElement.remove();
+}
+
+// Get current API key
+function getCurrentApiKey() {
+    return GROQ_API_KEYS[currentKeyIndex];
+}
+
+// Move to next API key
+function moveToNextApiKey() {
+    currentKeyIndex = (currentKeyIndex + 1) % GROQ_API_KEYS.length;
+    console.log(`🔑 Moved to API key index: ${currentKeyIndex}`);
+}
+
+// -----------------------------
+// RAG Functions
+// -----------------------------
+
+/**
+ * Search for relevant document chunks using Firebase Cloud Function
+ */
+async function searchRelevantChunks(query) {
+    try {
+        // Option 1: Using Firebase Functions SDK (if available)
+        if (searchDocumentsFunction) {
+            const result = await searchDocumentsFunction({ query, topK: 3 });
+            return result.data.chunks || [];
+        }
+        
+        // Option 2: Direct HTTP call to Cloud Function
+        const functionUrl = FIREBASE_FUNCTION_URL || 'YOUR_FUNCTION_URL_HERE';
+        
+        const response = await fetch(`${functionUrl}/searchDocuments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: { query, topK: 3 } })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Search function failed');
+        }
+        
+        const result = await response.json();
+        return result.chunks || [];
+    } catch (error) {
+        console.error('Error searching documents:', error);
+        return [];
+    }
+}
+
+/**
+ * Generate response using RAG + Groq
+ */
+async function generateRAGResponse(query, relevantChunks) {
+    // Build context from retrieved chunks
+    const context = relevantChunks
+        .map((chunk, index) => `[Document ${index + 1}]\n${chunk.text}`)
+        .join('\n\n---\n\n');
+
+    const systemPrompt = `You are a helpful customer service assistant for Globyte IT and Business Consulting, a consulting firm dedicated to helping organizations modernize technology, strengthen cybersecurity, streamline operations, and achieve sustainable growth.
+
+Use the following context from Globyte's business plan and documentation to answer questions accurately and helpfully:
+
+${context}
+
+Instructions:
+- Answer based primarily on the provided context
+- If the context doesn't contain relevant information, politely say so and offer to connect the user with a human representative
+- Keep responses concise, professional, and focused on the user's question
+- If asked about services, pricing, or specific details not in the context, suggest they contact the team directly
+- Always maintain a friendly and professional tone`;
+
+    const messages = [
+        {
+            role: "system",
+            content: systemPrompt
+        },
+        {
+            role: "user",
+            content: query
+        }
+    ];
+
+    let data = null;
+    let lastError = null;
+    let attempts = 0;
+    const maxAttempts = GROQ_API_KEYS.length;
+
+    // Try all keys until we get a successful response
+    while (attempts < maxAttempts) {
+        const apiKey = getCurrentApiKey();
+        console.log(`🔑 Attempt ${attempts + 1}: Using API key index: ${currentKeyIndex}`);
+        
+        try {
+            const response = await fetch(GROQ_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "llama-3.1-8b-instant",
+                    messages: messages,
+                    temperature: 0.7,
+                    max_tokens: 1024
+                })
+            });
+
+            if (response.ok) {
+                data = await response.json();
+                break; // success, exit loop
+            } else {
+                lastError = new Error(`API error: ${response.status} ${response.statusText}`);
+                console.warn(`⚠️ API key index ${currentKeyIndex} failed with status: ${response.status}`);
+                
+                moveToNextApiKey();
+                attempts++;
+            }
+        } catch (err) {
+            lastError = err;
+            console.warn(`⚠️ API key index ${currentKeyIndex} failed with error: ${err.message}`);
+            
+            moveToNextApiKey();
+            attempts++;
+        }
+    }
+
+    if (data && data.choices && data.choices.length > 0) {
+        return data.choices[0].message.content;
+    } else {
+        throw lastError || new Error('All API keys failed');
+    }
+}
+
+// -----------------------------
+// Chat Logic
+// -----------------------------
+async function sendMessage() {
+    const prompt = chatInput.value.trim();
+    if (prompt === '') return;
+
+    appendMessage(prompt, 'user');
+    chatInput.value = '';
+    showLoadingIndicator();
+
+    try {
+        const lowerPrompt = prompt.toLowerCase();
+
+        // Simple responses (no RAG needed)
+        if (["hi", "hello", "hey", "hy"].some(g => lowerPrompt.includes(g))) {
+            hideLoadingIndicator();
+            appendMessage("Hello 👋! How can I assist you today?", 'bot');
+            return;
+        }
+        if (["thank", "thanks"].some(t => lowerPrompt.includes(t))) {
+            hideLoadingIndicator();
+            appendMessage("You're welcome! 😊 Anything else I can help you with?", 'bot');
+            return;
+        }
+        if (["bye", "goodbye"].some(b => lowerPrompt.includes(b))) {
+            hideLoadingIndicator();
+            appendMessage("Goodbye! 👋 Feel free to reach out anytime.", 'bot');
+            return;
+        }
+
+        // RAG: Search for relevant chunks
+        console.log('🔍 Searching for relevant documents...');
+        const relevantChunks = await searchRelevantChunks(prompt);
+        
+        if (relevantChunks.length === 0) {
+            console.warn('⚠️ No relevant chunks found, using fallback response');
+            hideLoadingIndicator();
+            appendMessage("I'm having trouble finding specific information about that. Would you like me to connect you with a human representative who can help?", 'bot');
+            return;
+        }
+
+        console.log(`✅ Found ${relevantChunks.length} relevant chunks`);
+
+        // Generate response using RAG
+        console.log('🤖 Generating response with RAG...');
+        const botResponse = await generateRAGResponse(prompt, relevantChunks);
+        
+        hideLoadingIndicator();
+        appendMessage(botResponse, 'bot');
+
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        hideLoadingIndicator();
+        appendMessage("I'm having trouble connecting right now. Please try again later or contact us directly at globyteconsulting@gmail.com.", 'bot');
+    }
+}
+
+// -----------------------------
+// Event Listeners
+// -----------------------------
+if (chatbotFab) chatbotFab.addEventListener('click', toggleChatbot);
+if (closeChatbotBtn) closeChatbotBtn.addEventListener('click', toggleChatbot);
+if (sendChatBtn) sendChatBtn.addEventListener('click', sendMessage);
+if (chatInput) {
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+}
