@@ -97,11 +97,6 @@
       /* Deep dark blue */
     }
 
-    html {
-      /* Prevent horizontal scroll at the root level */
-      overflow-x: hidden;
-    }
-
     body {
       font-family: 'PT Sans', system-ui, -apple-system, sans-serif;
       color: var(--secondary);
@@ -110,8 +105,6 @@
       font-weight: 400;
       /* Mobile text size increase */
       font-size: 18px;
-      /* Prevent horizontal scroll on all viewports */
-      overflow-x: hidden;
     }
 
     @media (min-width: 768px) {
@@ -345,6 +338,10 @@
     @media (max-width: 768px) {
 
       /* Styles for mobile */
+      body {
+        overflow-x: hidden;
+      }
+
       img {
         max-width: 100%;
         height: auto;
@@ -374,7 +371,7 @@
   <header id="header" class="fixed w-full z-50 bg-white/90 backdrop-blur-sm transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
       <a href="#home" class="flex items-center gap-3" aria-label="Globyte home">
-        <img src="/Globyte images/logo.png"
+        <img src="https://s3.eu-north-1.amazonaws.com/www.globytesolution.com/Images/globytelogolarge-05.png"
           alt="GLOBYTE logo" class="object-contain h-8 md:h-10 lg:h-12 max-w-[180px]" loading="lazy" width="206.17"
           height="55" />
       </a>
@@ -624,72 +621,8 @@
     </div>
   </section>
 
-  <!-- Products Section -->
-  <section id="products" class="section-padding bg-secondary-50">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="text-primary-600 font-semibold">OUR PRODUCTS</span>
-        <h2 class="text-3xl md:text-4xl font-normal text-primary-800 mt-2 mb-4">Solutions Built by Globyte</h2>
-        <p class="hidden md:block text-lg text-secondary-700">Explore Globyte's own products designed to solve real
-          problems for our clients and communities.</p>
-        <p class="md:hidden text-lg text-secondary-700">Globyte products delivering value for clients and
-          communities.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Product 1: Inventory Notification System -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover h-full flex flex-col min-h-[280px]">
-          <h3 class="text-2xl font-normal text-primary-800 mb-3">Inventory Notification System</h3>
-          <!-- Desktop / tablet description -->
-          <p class="hidden md:block text-secondary-700 mb-4">A smart, automated notification platform that helps grocery
-            and retail businesses stay on top of inventory levels, reduce waste, and improve product availability.</p>
-          <!-- Mobile description -->
-          <p class="md:hidden text-secondary-700 mb-4 mt-auto pb-4 border-b border-secondary-100">An alert system that helps grocery and retail stores avoid
-            stockouts and reduce waste.</p>
-          <p class="hidden md:block text-sm text-secondary-700 mb-4">Currently powering leading local markets:</p>
-
-          <div class="space-y-2 mb-4">
-            <a href="https://negabutchery.com/" target="_blank" rel="noopener"
-              class="inline-flex items-center text-primary-700 hover:text-primary-900 text-sm underline">
-              <span class="mr-2">Nega Butchery</span>
-              <i class="fas fa-arrow-up-right-from-square text-xs"></i>
-            </a>
-            <a href="https://snsinternationalmarket.com/" target="_blank" rel="noopener"
-              class="inline-flex items-center text-primary-700 hover:text-primary-900 text-sm underline">
-              <span class="mr-2">SNS International Market</span>
-              <i class="fas fa-arrow-up-right-from-square text-xs"></i>
-            </a>
-          </div>
-          <!-- Desktop / tablet footer note -->
-          <div class="mt-auto pt-4 border-t border-secondary-100 text-sm text-secondary-700 hidden md:block">
-            Designed to integrate with existing store operations and provide timely alerts for better decision-making.
-          </div>
-        </div>
-
-        <!-- Product 2: Habesha Information Hub -->
-        <div class="bg-white rounded-2xl shadow-soft border border-secondary-100 p-6 card-hover h-full flex flex-col min-h-[280px]">
-          <h3 class="text-2xl font-normal text-primary-800 mb-3">Habesha Information Hub</h3>
-          <!-- Desktop / tablet description -->
-          <p class="hidden md:block text-secondary-700 mb-4">A digital hub aimed at connecting the Habesha community with
-            curated information, resources, and services in one centralized platform.</p>
-          <!-- Mobile description -->
-          <p class="md:hidden text-secondary-700 mb-4">A central place for Habesha community news and resources.</p>
-          <div class="mt-auto pt-4 border-t border-secondary-100">
-            <p class="text-accent-600 font-semibold text-sm uppercase tracking-wide">Coming Soon</p>
-            <!-- Desktop / tablet coming-soon note -->
-            <p class="hidden md:block text-secondary-700 text-sm mt-2">Currently in development. Stay tuned for launch
-              details and how your organization can participate.</p>
-            <!-- Mobile coming-soon note -->
-            <p class="md:hidden text-secondary-700 text-sm mt-2">In development coming soon.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
   <!-- About Section -->
-  <section id="about" class="section-padding bg-secondary-100">
+  <section id="about" class="section-padding bg-secondary-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div class="animate-fade-in">
@@ -1118,65 +1051,126 @@
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="py-16 md:py-20 bg-primary-900 text-white">
+  <section id="contact" class="section-padding bg-primary-900 text-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-        <!-- Left column: heading and intro text -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div class="animate-fade-in">
           <span class="text-primary-300 font-semibold">GET IN TOUCH</span>
           <h2 class="text-3xl md:text-4xl font-normal text-white mt-2 mb-6">Let's Start a Conversation</h2>
-          <p class="text-lg text-primary-200">Ready to transform your business with innovative technology
+          <p class="text-lg text-primary-200 mb-8">Ready to transform your business with innovative technology
             solutions? Contact us today to schedule a consultation.</p>
-        </div>
 
-        <!-- Right column: contact details -->
-        <div class="space-y-6">
-          <div class="flex gap-4">
-            <div
-              class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
-              <i class="fas fa-map-marker-alt"></i>
+          <div class="space-y-6 hidden md:block">
+            <div class="flex gap-4">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-white mb-1">Our Location</h3>
+                <p class="text-primary-300">Remote-first with team members across the United States</p>
+              </div>
             </div>
-            <div>
-              <h3 class="font-semibold text-white mb-1">Our Location</h3>
-              <p class="text-primary-300">5300 Memorial Drive, Suite A #123, Stone Mountain GA 30083</p>
+
+            <div class="flex gap-4">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-white mb-1">Email Us</h3>
+                <p class="text-primary-300">globytesolution@gmail.com</p>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div
+                class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-white mb-1">Call Us</h3>
+                <p class="text-primary-300">+1 (720) 280-3704</p>
+              </div>
             </div>
           </div>
 
-          <div class="flex gap-4">
-            <div
-              class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <div>
-              <h3 class="font-semibold text-white mb-1">Email Us</h3>
-              <p class="text-primary-300">globyteconsulting@gmail.com</p>
-            </div>
-          </div>
-
-          <div class="flex gap-4">
-            <div
-              class="flex-shrink-0 w-12 h-12 bg-primary-800 rounded-lg flex items-center justify-center text-primary-300">
-              <i class="fas fa-phone-alt"></i>
-            </div>
-            <div>
-              <h3 class="font-semibold text-white mb-1">Call Us</h3>
-              <p class="text-primary-300">+1 415-742-1350</p>
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-primary-800">
+          <div class="mt-8 pt-6 border-t border-primary-800 hidden md:block">
             <h3 class="font-semibold text-white mb-4">Follow Us</h3>
             <div class="flex gap-4">
-              <a href="https://www.linkedin.com/company/globyte-it-and-business-consulting-llc/posts/?feedView=all"
+              <a href="#"
                 class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
                 <i class="fab fa-linkedin-in"></i>
               </a>
-              <a href="https://github.com/GlobyteITConsulting"
+              <a href="#"
+                class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#"
                 class="w-10 h-10 rounded-full bg-primary-800 flex items-center justify-center text-primary-300 hover:bg-primary-700 hover:text-white transition">
                 <i class="fab fa-github"></i>
               </a>
             </div>
           </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-large p-8 animate-slide-up text-black">
+          <h3 class="text-2xl font-normal text-black mb-6">Send Us a Message</h3>
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="first-name" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                <input type="text" id="first-name"
+                  class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                  placeholder="Your first name">
+              </div>
+              <div>
+                <label for="last-name" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                <input type="text" id="last-name"
+                  class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                  placeholder="Your last name">
+              </div>
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+              <input type="email" id="email"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                placeholder="you@example.com">
+            </div>
+
+            <div>
+              <label for="company" class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+              <input type="text" id="company"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                placeholder="Your company name">
+            </div>
+
+            <div>
+              <label for="service" class="block text-sm font-medium text-black mb-2">Service of Interest</label>
+              <select id="service"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black bg-white">
+                <option value="">Select a service</option>
+                <option value="strategy">IT Strategy & Planning</option>
+                <option value="integration">Systems Integration</option>
+                <option value="security">Cybersecurity Services</option>
+                <option value="cloud">Cloud Computing Solutions</option>
+                <option value="managed">Managed IT Services</option>
+                <option value="software">Software Development</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+              <textarea id="message" rows="4"
+                class="w-full px-4 py-3 rounded-lg border border-secondary-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition text-black"
+                placeholder="Tell us about your project or requirements"></textarea>
+            </div>
+
+            <button type="submit"
+              class="w-full px-6 py-3.5 rounded-lg btn-primary text-white font-semibold shadow-medium">Send
+              Message</button>
+          </form>
         </div>
       </div>
     </div>
@@ -1188,7 +1182,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div class="md:col-span-2 flex flex-col items-center md:items-start text-center md:text-left">
           <a href="#home" class="inline-block mb-6">
-            <img src="/Globyte images/logo.png"
+            <img src="https://s3.eu-north-1.amazonaws.com/www.globytesolution.com/Images/globytelogolarge-05.png"
               alt="GLOBYTE logo" class="object-contain h-12 md:h-10 max-w-[200px] invert brightness-0" loading="lazy"
               width="240" height="120" />
           </a>
@@ -1241,7 +1235,10 @@
       </div>
 
       <div class="border-t border-primary-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-primary-400 text-sm">&copy; <span id="current-year"></span> GLOBYTE. All rights reserved.</p>
+        <p class="text-primary-400 text-sm">© <span id="current-year"></span> GLOBYTE. All rights reserved.</p>
+        <script>
+          document.getElementById('current-year').textContent = new Date().getFullYear();
+        </script>
         <div class="flex gap-6 mt-4 md:mt-0">
           <a href="#" class="text-primary-400 hover:text-white text-sm transition">Privacy Policy</a>
           <a href="#" class="text-primary-400 hover:text-white text-sm transition">Terms of Service</a>
@@ -1249,9 +1246,6 @@
       </div>
     </div>
   </footer>
-  <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
 
   <!-- Back to Top Button -->
   <button id="back-to-top"
