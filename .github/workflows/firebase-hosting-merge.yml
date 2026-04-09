@@ -1,5 +1,6 @@
 ## This workflow runs when code is merged into your main branch (or whenever a commit is pushed directly to it). 
 ## It deploys the final, tested code to the live (production) channel of your Firebase site.
+## It also deploys Cloud Functions for the RAG system.
 
 name: Deploy to Firebase Hosting on merge
 
@@ -14,8 +15,77 @@ jobs:
     steps:
       - name: ⬇️ Checkout Repository
         uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: 📥 Install Functions Dependencies
+        run: |
+          cd functions
+          npm install
+      
+      - name: 🔧 Install Firebase CLI
+        run: npm install -g firebase-tools
+      
+      - name: 🔄 Replace Placeholders in Functions
+        run: |
+          cd functions
+          # Replace Hugging Face API key placeholder
+          if [ -f "index.js" ]; then
+            sed -i "s|__HUGGINGFACE_API_KEY__|${{ secrets.HUGGINGFACE_API_KEY }}|g" index.js
+            # Optional: Replace OpenAI API key if using OpenAI embeddings
+            # sed -i "s|__OPENAI_API_KEY__|${{ secrets.OPENAI_API_KEY }}|g" index.js
+          fi
+        env:
+          HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+      
+      - name: 🚀 Deploy Cloud Functions
+        id: deploy-functions
+        run: |
+          firebase deploy --only functions --project globyteus 2>&1 | tee deploy.log
+          # Extract function URL from deployment output
+          FUNCTION_URL=$(grep -oP 'https://[^/]+\.cloudfunctions\.net' deploy.log | head -1 || echo "")
+          if [ -n "$FUNCTION_URL" ]; then
+            echo "FUNCTION_BASE_URL=$FUNCTION_URL" >> $GITHUB_ENV
+            echo "✅ Function URL: $FUNCTION_URL"
+          fi
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+      
+      - name: 🔄 Replace Placeholders in Frontend
+        run: |
+          # Use secret if available, otherwise use extracted URL
+          FUNCTION_URL="${{ secrets.FIREBASE_FUNCTION_URL }}"
+          if [ -z "$FUNCTION_URL" ] && [ -n "$FUNCTION_BASE_URL" ]; then
+            FUNCTION_URL="$FUNCTION_BASE_URL"
+          fi
+          
+          # Replace placeholders in chatbot-rag.js
+          if [ -f "chatbot-rag.js" ]; then
+            # Google Gemini API key
+            sed -i "s|__GEMINI_API_KEY__|${{ secrets.GEMINI_API_KEY }}|g" chatbot-rag.js
+            # Firebase Function URL
+            sed -i "s|__FIREBASE_FUNCTION_URL__|${FUNCTION_URL}|g" chatbot-rag.js
+            # Groq keys (commented out but still replace if present)
+            sed -i "s|__GROQ_API_KEY_1__|${{ secrets.GROQ_API_KEY_1 }}|g" chatbot-rag.js
+            sed -i "s|__GROQ_API_KEY_2__|${{ secrets.GROQ_API_KEY_2 }}|g" chatbot-rag.js
+            sed -i "s|__GROQ_API_KEY_3__|${{ secrets.GROQ_API_KEY_3 }}|g" chatbot-rag.js
+            echo "✅ Replaced placeholders in chatbot-rag.js"
+          fi
+          
+          # Replace Firebase config placeholders in index.html
+          if [ -f "index.html" ]; then
+            sed -i "s|__FIREBASE_API_KEY__|${{ secrets.FIREBASE_API_KEY }}|g" index.html
+            sed -i "s|__FIREBASE_MESSAGING_SENDER_ID__|${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}|g" index.html
+            sed -i "s|__FIREBASE_APP_ID__|${{ secrets.FIREBASE_APP_ID }}|g" index.html
+            echo "✅ Replaced Firebase config in index.html"
+          fi
+      
       # --- Deploy to Live Channel ---
-      - name: 🚀 Deploy to Firebase Live Channel
+      - name: 🌐 Deploy to Firebase Live Channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
